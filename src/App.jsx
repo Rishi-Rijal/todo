@@ -1,31 +1,27 @@
-import { useEffect } from "react"
-import { useDispatch } from "react-redux"
-import { userInfo } from "./api/user.api"
-import { login, logout } from "./features/login/loginSlice";
-
-
-async function App() {
+// App.jsx (or your top-level layout)
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { login, logout } from './features/login/loginSlice';
+import { userInfo } from './api/user.api'; 
+export default function App() {
   const dispatch = useDispatch();
 
-  const checkLogin = async () => {
-    const result = await userInfo()
-    try {
-      dispatch(login(result.data))
-    } catch (error) {
-      dispatch(logout())
-    }
-  }
-
   useEffect(() => {
-    checkLogin
-  }, [])
+    let isMounted = true;
 
+    (async () => {
+      try {
+        const { data } = await userInfo(); 
+        if (isMounted) dispatch(login(data));
+      } catch (e) {
+        if (isMounted) dispatch(logout());
+      }
+    })();
+
+    return () => { isMounted = false; };
+  }, [dispatch]);
 
   return (
-    <div>
-
-    </div>
-  )
+    <></>
+  );
 }
-
-export default App
