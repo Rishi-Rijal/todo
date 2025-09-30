@@ -1,5 +1,7 @@
-import React from "react";
 import { useForm } from "react-hook-form";
+import { registerUser } from "../../api/user.api";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupForm() {
   const {
@@ -18,9 +20,26 @@ export default function SignupForm() {
 
   const passwordValue = watch("password");
 
-  const onSubmit = (data) => {
+  const [error, setError] = useState("")
+
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+
     console.log("Signup form submitted:", data);
     // TODO API call for the signup form
+    try {
+      const result = await registerUser({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword
+      });
+      console.log("✅ Registered:", result);
+      navigate("/login")
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong");
+    } 
   };
 
   return (
@@ -33,6 +52,10 @@ export default function SignupForm() {
           <h2 className="text-2xl font-semibold text-gray-900 text-center">
             Sign Up
           </h2>
+
+          <div className="block text-sm font-medium text-red-700 mb-1">
+              {error && <p>{error}</p>}
+          </div>
 
           {/* Full Name */}
           <div>
