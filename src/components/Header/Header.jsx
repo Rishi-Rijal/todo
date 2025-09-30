@@ -1,11 +1,27 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";   // ✅ add useNavigate
+import { logoutUser } from "../../api/user.api";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout } from "../../features/login/loginSlice";
 
-export default function Header({ isAuthenticated= false, onLogout, 
-    className = ""
- }) {
+export default function Header({ className = "" }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [error, setError] = useState(null);             
+  const dispatch = useDispatch();
+  const navigate = useNavigate();                       
 
+  const isAuthenticated = useSelector((state) => state.login.status);
+
+  const onLogout = async () => {
+    try {
+      const result = await logoutUser();
+      console.log("✅ Logged out:", result);
+      dispatch(logout());
+      navigate("/");
+    } catch (err) {
+      setError(err?.response?.data?.message || "Something went wrong");
+    }
+  };
   return (
     <header className={`bg-white/70 backdrop-blur-md shadow-sm sticky top-0 z-50 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
