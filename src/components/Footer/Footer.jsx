@@ -30,7 +30,7 @@ export default function Footer({
           {/* Social Icons */}
           <div className="flex justify-center space-x-5">
             <a
-              href="https://github.com/your-username"
+              href="https://github.com/rishi-rijal"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-indigo-600 transition"
@@ -38,7 +38,7 @@ export default function Footer({
               <FaGithub className="w-6 h-6" />
             </a>
             <a
-              href="https://www.linkedin.com/in/your-username/"
+              href="https://www.linkedin.com/in/rishi-rijal/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-500 hover:text-indigo-600 transition"
