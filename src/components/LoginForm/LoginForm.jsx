@@ -1,5 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { loginUser } from "../../api/user.api";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const {
@@ -12,10 +15,21 @@ export default function LoginForm() {
       password: "",
     },
   });
+  const [error , setError] = useState("")
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log("Login form submitted:", data);
-    // TODO API call for the login form
+  const onSubmit = async (data) => {
+    try {
+      const result = await loginUser({
+        email: data.email,
+        password: data.password
+      });
+      console.log("✅ Logged in:", result);
+      navigate("/")
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong");
+    }
+
   };
 
   return (
