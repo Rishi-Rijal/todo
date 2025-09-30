@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { loginUser } from "../../api/user.api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login, logout } from "../../features/login/loginSlice";
 
 export default function LoginForm() {
   const {
@@ -17,6 +19,7 @@ export default function LoginForm() {
   });
   const [error , setError] = useState("")
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
     try {
@@ -24,7 +27,9 @@ export default function LoginForm() {
         email: data.email,
         password: data.password
       });
+      dispatch(login(result.data))
       console.log("✅ Logged in:", result);
+
       navigate("/")
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");

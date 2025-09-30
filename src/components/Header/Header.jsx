@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";   // ✅ add useNavigate
+import { Link, useNavigate } from "react-router-dom";   
 import { logoutUser } from "../../api/user.api";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout } from "../../features/login/loginSlice";
